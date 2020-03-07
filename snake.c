@@ -8,6 +8,10 @@ enum compass direction = RIGHT;
 int length = 6;
 int x = 8;
 int y = 7;
+int endX = 3;
+int endY = 7;
+
+enum compass path[5] = {RIGHT, RIGHT, RIGHT, RIGHT, RIGHT};
 
 int newfruit() {
     mvprintw(1+(rand() % 14), 1+(rand() % 38), "●");
@@ -15,32 +19,64 @@ int newfruit() {
 }
 
 int moveSnake() {
+    mvprintw(endY, endX, " ");
     switch(direction) {
         case LEFT:
-            mvprintw(y, x, "░");
-            if (x > 1)
+            if (x > 1) {
+                mvprintw(y, x, "░");
                 x--;
-            mvprintw(y, x, "▓");
+                mvprintw(y, x, "▓");
+            }
             break;
         case DOWN: /*j*/
             mvprintw(y, x, "░");
-            if (y < 14)
+            if (y < 14) {
                 y++;
-            mvprintw(y, x, "▓");
+                mvprintw(y, x, "▓");
+            }
             break;
         case UP: /*k*/
             mvprintw(y, x, "░");
-            if (y > 1)
+            if (y > 1) {
                 y--;
-            mvprintw(y, x, "▓");
+                mvprintw(y, x, "▓");
+            }
             break;
         case RIGHT: /*l*/
             mvprintw(y, x, "░");
-            if (x < 38)
+            if (x < 38) {
                 x++;
-            mvprintw(y, x, "▓");
+                mvprintw(y, x, "▓");
+            }
             break;
     }
+    mvprintw(50, 50, "3");
+}
+
+int logPath() {
+    int i = 0;
+    for (; i < 4; i++) {
+        path[i] = path[i+1];
+    }
+    path[4] = direction;
+}
+
+int updateEnd() {
+    switch(path[0]) {
+        case LEFT:
+            endX--;
+            break;
+        case DOWN:
+            endY++;
+            break;
+        case UP:
+            endY--;
+            break;
+        case RIGHT:
+            endX++;
+            break;
+    }
+    return(0);
 }
 
 int main() {
@@ -98,6 +134,8 @@ int main() {
                 return(0);
         }
         moveSnake();
+        updateEnd();
+        logPath();
         refresh();
     }
 }

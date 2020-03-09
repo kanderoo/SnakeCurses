@@ -14,7 +14,8 @@ int endY = 7;
 enum compass path[5] = {RIGHT, RIGHT, RIGHT, RIGHT, RIGHT};
 
 int endGame() {
-    mvprintw(7,14, "Game Over!"); 
+    mvprintw(7,15, "Game Over!"); 
+    mvprintw(8, 8, "Press any button to quit.");
     nodelay(stdscr, FALSE);
     getch();
     endwin();

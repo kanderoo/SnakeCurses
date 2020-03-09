@@ -13,6 +13,14 @@ int endY = 7;
 
 enum compass path[5] = {RIGHT, RIGHT, RIGHT, RIGHT, RIGHT};
 
+int endGame() {
+    mvprintw(7,14, "Game Over!"); 
+    nodelay(stdscr, FALSE);
+    getch();
+    endwin();
+    exit(0);
+}
+
 int newfruit() {
     mvprintw(1+(rand() % 14), 1+(rand() % 38), "●");
     return 0;
@@ -26,6 +34,8 @@ int moveSnake() {
                 mvprintw(y, x, "░");
                 x--;
                 mvprintw(y, x, "▓");
+            } else {
+                endGame();
             }
             break;
         case DOWN: /*j*/
@@ -33,6 +43,8 @@ int moveSnake() {
             if (y < 14) {
                 y++;
                 mvprintw(y, x, "▓");
+            } else {
+                endGame();
             }
             break;
         case UP: /*k*/
@@ -40,6 +52,8 @@ int moveSnake() {
             if (y > 1) {
                 y--;
                 mvprintw(y, x, "▓");
+            } else {
+                endGame();
             }
             break;
         case RIGHT: /*l*/
@@ -47,6 +61,8 @@ int moveSnake() {
             if (x < 38) {
                 x++;
                 mvprintw(y, x, "▓");
+            } else {
+                endGame();
             }
             break;
     }

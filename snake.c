@@ -184,21 +184,22 @@ int main() {
                 endwin();
                 return(0);
         }
-        if (x == fruitX && y == fruitY) {
-            length++;
-            mvprintw(16, 0, "Length: %d", length);
-            newFruit();
-            path[length-2] = direction;
-        } else {
-            mvprintw(endY, endX, " ");
-            updateEnd();
-            shiftPath();
-        }
-        if (nextChar() == L'░') {
-            endGame();
+        switch(nextChar()) {
+            case L'●':
+                length++;
+                mvprintw(16, 0, "Length: %d", length);
+                newFruit();
+                path[length-2] = direction;
+                checkMemory();
+                break;
+            case L'░':
+                endGame();
+            default:
+                mvprintw(endY, endX, " ");
+                updateEnd();
+                shiftPath();
         }
         moveSnake();
-        checkMemory();
 
         refresh();
     }

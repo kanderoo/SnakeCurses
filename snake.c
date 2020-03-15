@@ -108,6 +108,18 @@ int moveSnake() {
     }
 }
 
+int nextChar() {
+    switch(direction) {
+        case LEFT:
+            return mvinch(y, x-1);
+        case DOWN:
+            return mvinch(y+1, x);
+        case UP:
+            return mvinch(y-1, x);
+        case RIGHT:
+            return mvinch(y, x+1);
+    }
+}
 
 int main() {
 
@@ -181,6 +193,9 @@ int main() {
             mvprintw(endY, endX, " ");
             updateEnd();
             shiftPath();
+        }
+        if (nextChar() == L'░') {
+            endGame();
         }
         moveSnake();
         checkMemory();

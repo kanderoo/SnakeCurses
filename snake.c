@@ -4,17 +4,52 @@
 #include <time.h>
 
 enum compass{UP, DOWN, LEFT, RIGHT};
-enum compass direction = RIGHT;
-int length = 6;
-int x = 8;
-int y = 7;
-int endX = 3;
-int endY = 7;
-int fruitX = 29;
-int fruitY = 7;
-int arraySize = 5;
+enum compass direction;
+int length;
+int x;
+int y;
+int endX;
+int endY;
+int arraySize;
 
 int* path;
+
+int initGame() {
+    /* init variables */
+    length = 6;
+    x = 8;
+    y = 7;
+    endX = 3;
+    endY = 7;
+    arraySize = 5;
+
+    /* init path array */
+    path = (int*)malloc(arraySize * sizeof(int));
+    for (int i = 0; i < arraySize; i++) {
+        path[i] = RIGHT;
+    }
+
+    direction = RIGHT;
+
+    /* draw playing area */
+    mvprintw(0, 0,  "╔══════════════════════════════════════╗\n");
+    mvprintw(1, 0,  "║                                      ║\n");
+    mvprintw(2, 0,  "║                                      ║\n");
+    mvprintw(3, 0,  "║                                      ║\n");
+    mvprintw(4, 0,  "║                                      ║\n");
+    mvprintw(5, 0,  "║                                      ║\n");
+    mvprintw(6, 0,  "║                                      ║\n");
+    mvprintw(7, 0,  "║  ░░░░░▓                    ●         ║\n");
+    mvprintw(8, 0,  "║                                      ║\n");
+    mvprintw(9, 0,  "║                                      ║\n");
+    mvprintw(10, 0, "║                                      ║\n");
+    mvprintw(11, 0, "║                                      ║\n");
+    mvprintw(12, 0, "║                                      ║\n");
+    mvprintw(13, 0, "║                                      ║\n");
+    mvprintw(14, 0, "║                                      ║\n");
+    mvprintw(15, 0, "╚══════════════════════════════════════╝\n");
+    mvprintw(16, 0, "Length: 6  ");
+}
 
 int checkMemory() {
     if (length-2 == arraySize) {
@@ -26,18 +61,26 @@ int checkMemory() {
 
 int endGame() {
     mvprintw(7, 15, "Game Over!"); 
-    mvprintw(8, 10, "Press CTRL+C to quit");
+    mvprintw(8, 11, "Press r to restart");
+    mvprintw(9, 10, "Press CTRL+C to quit");
     nodelay(stdscr, FALSE);
-    while(getch() != 3) {}
-    free(path);
-    endwin();
-    exit(0);
+    while(true) {
+        switch(getch()) {
+            case 3:
+                free(path);
+                endwin();
+                exit(0);
+                break;
+            case 114:
+                nodelay(stdscr, TRUE);
+                initGame();
+                return(0);
+        }
+    }
 }
 
 int newFruit() {
-    fruitX = 1+(rand() % 38);
-    fruitY = 1+(rand() % 14);
-    mvprintw(fruitY, fruitX, "●");
+    mvprintw(1+(rand() % 14), 1+(rand() % 38), "●");
     return 0;
 }
 
@@ -121,15 +164,9 @@ int nextChar() {
     }
 }
 
+
 int main() {
-
-    path = (int*)malloc(arraySize * sizeof(int));
-    for (int i = 0; i < arraySize; i++) {
-        path[i] = RIGHT;
-    }
-
     setlocale(LC_ALL, "");
-
 
     /* init curses window */
     initscr();
@@ -139,26 +176,9 @@ int main() {
     curs_set(0);
     nodelay(stdscr, TRUE);
 
-    /* draw playing area */
-    printw("╔══════════════════════════════════════╗\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║  ░░░░░▓                    ●         ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("║                                      ║\n");
-    printw("╚══════════════════════════════════════╝\n");
+    initGame();
 
     int ch;
-    mvprintw(16, 0, "Length: 6");
     while(1) {
         nanosleep((const struct timespec[]){{0, 80000000L}}, NULL);
         ch = getch();

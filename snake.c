@@ -80,7 +80,13 @@ int endGame() {
 }
 
 int newFruit() {
-    mvprintw(1+(rand() % 14), 1+(rand() % 38), "●");
+    int randx = 1+(rand() % 14);
+    int randy =  1+(rand() % 38);
+    if (mvinch(randx, randy) != L'░') {
+        mvprintw(randx, randy, "●");
+    } else {
+        newFruit(); //recur if the fruit lands on snake
+    }
     return 0;
 }
 

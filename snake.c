@@ -12,6 +12,7 @@ int endX;
 int endY;
 int arraySize;
 
+
 int* path;
 
 int initGame() {
@@ -204,6 +205,14 @@ int main() {
             case 108: /*l*/
                 if (direction != LEFT)
                     direction = RIGHT;
+                break;
+            case 27:
+                mvprintw(17, 0, "Paused");
+                ch = 0;
+                while (ch != 27) {
+                    ch = getch();
+                }
+                mvprintw(17, 0, "      ");
                 break;
             case 3: /*CTRL+C*/
                 free(path);
